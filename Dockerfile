@@ -29,4 +29,7 @@ RUN pip install -r requirements.txt
 EXPOSE 8188/tcp
 COPY --chown=nobody:nogroup --chmod=700 entrypoint.sh entrypoint.sh
 
+# Install Automatic1111's WebUI as well
+RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui /app/stable-diffusion-webui
+
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

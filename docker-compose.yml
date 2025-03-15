@@ -8,4 +8,34 @@ services:
       - "8188:8188"  # Bind port 8188 on the host to port 8188 inside the container
     volumes:
       - ./comfyui_data/checkpoints:/app/models/checkpoints # Mount a directory for models
-    command: "--cpu"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  automatic1111:
+    build:
+      context: .  # Path to the directory containing the Dockerfile
+      dockerfile: automatic1111.Dockerfile  # Optional if the file is named 'Dockerfile'
+    user: 1000:1000 # User is nobody:nogroup
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+      - CUDA_DEVICE_MAX_CONNECTIONS=8
+    ports:
+      - "7860:7860"  # Bind port 8188 on the host to port 8188 inside the container
+    volumes:
+      - ./automatic1111_data/models:/app/models # Mount a directory for models
+      - ./automatic1111_data/cache:/app/cache # Mount a directory for models
+      - ./automatic1111_data/outputs:/app/outputs # Mount a directory for models
+      - ./automatic1111_data/extensions:/app/extensions # Mount a directory for models
+      - ./automatic1111_data/repositories:/app/repositories  # Mount a directory for clones repos
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
