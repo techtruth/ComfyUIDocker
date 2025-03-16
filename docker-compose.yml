@@ -42,12 +42,12 @@ services:
 
   dreambooth:
     build:
-      context: .  # Path to the directory containing the Dockerfile
+      context: ./dreambooth  # Path to the directory containing the Dockerfile
       dockerfile: dreambooth.Dockerfile  # Optional if the file is named 'Dockerfile'
-    #volumes:
-    #  - ./dreambooth_data/models:/app/models # Mount a directory for models
-    #  - ./dreambooth_data/cache:/app/cache # Mount a directory for models
-    #  - ./dreambooth_data/outputs:/app/outputs # Mount a directory for models
+    volumes:
+      - ./dreambooth/dreambooth_data/training_output:/app/training_output # Mount a directory for trained models
+      - ./dreambooth/dreambooth_data/training_input:/app/training_input # Mount a directory for input images
+      - ./dreambooth/dreambooth_data/models:/app/models # Mount a directory for models
     #  - ./dreambooth_data/extensions:/app/extensions # Mount a directory for models
     #  - ./dreambooth_data/repositories:/app/repositories  # Mount a directory for clones repos
     deploy:

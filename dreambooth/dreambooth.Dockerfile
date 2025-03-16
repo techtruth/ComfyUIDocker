@@ -15,7 +15,7 @@ RUN apt-get -q update; \
     apt-get clean
 
 # Make application folder and set user
-RUN mkdir /app; chown nobody:nobody /app
+RUN mkdir /app; chown ubuntu:ubuntu /app
 USER ubuntu
 
 # Clone source code repository
@@ -24,6 +24,13 @@ WORKDIR /app
 
 # Setup python environment
 RUN python -m venv venv
-ENV PATH="/app/bin:${PATH}"
+ENV PATH="/app/venv/bin:${PATH}"
 
-ENTRYPOINT ["/bin/bash"]
+# Install dependencies in python
+RUN pip install -r ./examples/dreambooth/requirements.txt
+RUN pip install git+https://github.com/huggingface/diffusers
+RUN pip install bitsandbytes deepspeed
+
+COPY --chown=ubuntu:ubuntu --chmod=700 entrypoint.sh entrypoint.sh
+
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
