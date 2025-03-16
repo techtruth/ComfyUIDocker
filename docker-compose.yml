@@ -39,3 +39,21 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+
+  dreambooth:
+    build:
+      context: .  # Path to the directory containing the Dockerfile
+      dockerfile: dreambooth.Dockerfile  # Optional if the file is named 'Dockerfile'
+    #volumes:
+    #  - ./dreambooth_data/models:/app/models # Mount a directory for models
+    #  - ./dreambooth_data/cache:/app/cache # Mount a directory for models
+    #  - ./dreambooth_data/outputs:/app/outputs # Mount a directory for models
+    #  - ./dreambooth_data/extensions:/app/extensions # Mount a directory for models
+    #  - ./dreambooth_data/repositories:/app/repositories  # Mount a directory for clones repos
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
