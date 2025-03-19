@@ -1,11 +1,14 @@
 FROM ubuntu AS base
 
 # Update system and install required packages
-RUN apt-get -q update; apt-get -q upgrade; \
+RUN apt-get -q update; \
+    apt-get -q upgrade; \
     apt-get install -y \
-    git \
-    curl \
-    python3 python-is-python3 python3-venv; \
+      git \
+      curl \
+      python3 python-is-python3 python3-venv \
+      libgl1 \
+      libglib2.0-0; \
     apt-get clean
 
 # Make application folder and set user
@@ -14,7 +17,7 @@ USER nobody
 
 # Clone source code repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app
-RUN ls -a /app
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager /app/custom_nodes/comfyui-manager
 WORKDIR /app
 
 # Setup python environment
@@ -26,10 +29,8 @@ RUN python -m venv .
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
 RUN pip install -r requirements.txt
 
+
 EXPOSE 8188/tcp
 COPY --chown=nobody:nogroup --chmod=700 entrypoint.sh entrypoint.sh
-
-# Install Automatic1111's WebUI as well
-RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui /app/stable-diffusion-webui
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

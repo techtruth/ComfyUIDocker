@@ -1,13 +1,14 @@
 services:
   comfyui:
     build:
-      context: .  # Path to the directory containing the Dockerfile
-      dockerfile: Dockerfile  # Optional if the file is named 'Dockerfile'
+      context: ./comfyui  # Path to the directory containing the Dockerfile
+      dockerfile: comfyui.Dockerfile  # Optional if the file is named 'Dockerfile'
     user: 65534:65534 # User is nobody:nogroup
     ports:
       - "8188:8188"  # Bind port 8188 on the host to port 8188 inside the container
     volumes:
       - ./comfyui_data/checkpoints:/app/models/checkpoints # Mount a directory for models
+      - ./comfyui_data/model-import:/app/models # Mount a directory for models
     deploy:
       resources:
         reservations:
