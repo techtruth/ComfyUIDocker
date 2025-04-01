@@ -31,6 +31,7 @@ RUN pip install -r requirements.txt
 
 
 EXPOSE 8188/tcp
-COPY --chown=nobody:nogroup --chmod=700 entrypoint.sh entrypoint.sh
+COPY --chown=nobody:nogroup entrypoint.sh entrypoint.sh
+RUN chmod 700 entrypoint.sh
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
