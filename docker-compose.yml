@@ -3,13 +3,15 @@ services:
     build:
       context: ./comfyui  # Path to the directory containing the Dockerfile
       dockerfile: comfyui.Dockerfile  # Optional if the file is named 'Dockerfile'
-    user: 65534:65534 # User is nobody:nogroup
+    user: 1000:1000 # User is nobody:nogroup
+    environment:
+      - HF_TOKEN
     ports:
       - "8188:8188"  # Bind port 8188 on the host to port 8188 inside the container
     volumes:
-      - ./comfyui_data/models:/app/models # Mount a directory for models
-      - ./comfyui_data/custom_nodes:/app/custom_nodes # Mount a directory for custom nodes
-      - ./comfyui_data/output:/app/output # Mount a directory output images
+      - ./comfyui/comfyui_data/models:/app/models # Mount a directory for models
+      - ./comfyui/comfyui_data/custom_nodes:/app/custom_nodes # Mount a directory for custom nodes
+      - ./comfyui/comfyui_data/output:/app/output # Mount a directory output images
     deploy:
       resources:
         reservations:

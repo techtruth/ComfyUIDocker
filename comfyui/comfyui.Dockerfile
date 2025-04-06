@@ -12,12 +12,13 @@ RUN apt-get -q update; \
     apt-get clean
 
 # Make application folder and set user
-RUN mkdir /app; chown nobody:nogroup /app
-USER nobody
+RUN mkdir /app; chown ubuntu:ubuntu /app
+USER ubuntu
 
 # Clone source code repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager /app/custom_nodes/comfyui-manager
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager /app/custom_nodes/Comfyui-Manager
+RUN git clone https://github.com/techtruth/ComfyUI-Dreambooth.git /app/custom_nodes/Dreambooth
 WORKDIR /app
 
 # Setup python environment
@@ -31,7 +32,7 @@ RUN pip install -r requirements.txt
 
 
 EXPOSE 8188/tcp
-COPY --chown=nobody:nogroup entrypoint.sh entrypoint.sh
+COPY --chown=ubuntu:ubuntu entrypoint.sh entrypoint.sh
 RUN chmod 700 entrypoint.sh
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
